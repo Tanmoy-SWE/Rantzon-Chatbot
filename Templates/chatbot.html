@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dr Chat</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #52516C;
+        margin: 0;
+        padding: 0;
+    }
+
+    #chatbox {
+        background-color: #ffff;
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+    }   
+
+    #chatlog {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        white-space: pre-wrap;
+    }
+
+    #userInput {
+        width: calc(100% - 75px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        white-space: pre-wrap;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    div#chatlog div {
+        padding: 5px;
+        margin: 5px;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+        white-space: pre-wrap;
+    }
+
+    div#chatlog div:nth-child(odd) {
+        align-self: flex-start;
+        white-space: pre-wrap;
+    }
+
+    div#chatlog div:nth-child(even) {
+        align-self: flex-end;
+        background-color: #007bff;
+        color: #fff;
+        white-space: pre-wrap;
+    }
+    
+    
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    
+    .logo img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+    }
+    .message {
+        padding: 5px;
+        margin: 5px;
+        border-radius: 5px;
+        width: 70%;
+        white-space: pre-wrap;
+    }
+
+    .user-message {
+        align-self: flex-end;
+        background-color: #007bff;
+        color: #fff;
+        text-align: right;
+        white-space: pre-wrap;
+    }
+
+    .bot-message {
+        align-self: flex-start;
+        background-color: #f0f0f0;
+        text-align: left;
+        white-space: pre-wrap;
+    }
+</style>
+
+<body>
+    
+    <h1>Dr Chat</h1>
+    </div>
+    <div id="chatbox">
+        <div id="chatlog"></div>
+        <input type="text" id="userInput" placeholder="Type your message here...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function appendMessage(message) {
+            var chatlog = document.getElementById("chatlog");
+            var messageDiv = document.createElement("div");
+            messageDiv.innerHTML = message;
+            chatlog.appendChild(messageDiv);
+        }
+
+        function sendMessage() {
+            var userInput = document.getElementById("userInput").value;
+            if (userInput.trim() !== "") {
+                appendMessage("You: " + userInput);
+                document.getElementById("userInput").value = "";
+
+                fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: 'user_input=' + encodeURIComponent(userInput)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    appendMessage(data.response);
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+
+        // Function to get the CSRF token
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
