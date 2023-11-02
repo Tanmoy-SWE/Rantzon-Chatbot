@@ -43,7 +43,7 @@ def chatbot_view(request):
 
         # Initial conversation message with the system's introduction and the context from the file
         conversation = [
-            {"role": "system", "content": f"You are a helpful assistant for Health related suggestion. Current time is {time_now}"},
+            {"role": "system", "content": f"You are a helpful assistant for Health related suggestion who predicts diseases. You can ask more information if needed. Current time is {time_now}"},
             {"role": "user", "content": preprocessed_text},
         ]
 
@@ -53,3 +53,6 @@ def chatbot_view(request):
         return JsonResponse({'response': "Chatbot: " + chatbot_output})
 
     return render(request, 'chatbot.html')
+
+def intro(request):
+    return render(request, 'into.html')

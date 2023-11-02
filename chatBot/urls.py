@@ -5,4 +5,5 @@ from django.conf import settings
 
 urlpatterns = [
     path('', views.chatbot_view),
+    path('intro/', views.intro),
 ]
