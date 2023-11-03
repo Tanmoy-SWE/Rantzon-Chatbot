@@ -14,7 +14,7 @@ def get_chatbot_response(user_message, conversation):
 
     # Get the chatbot's response from the API
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        engine="text-davinci-002", 
         messages=conversation
     )
 
