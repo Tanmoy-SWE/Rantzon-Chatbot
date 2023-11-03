@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import openai
 import time
+from django.conf import settings
 
-# Set your OpenAI API key
-openai.api_key = "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"
+openai.api_key = settings.OPENAI_API_KEY
+
 
 # Function to get the chatbot's response using OpenAI API
 def get_chatbot_response(user_message, conversation):

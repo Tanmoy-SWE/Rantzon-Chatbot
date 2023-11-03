@@ -1,2 +1,3 @@
 openai
+python-decouple
 Django==4.1.5
