@@ -7,6 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500&family=Crimson+Text:wght@600&family=Fira+Sans+Condensed:wght@100;200;300&family=Fira+Sans:wght@100;200&family=IBM+Plex+Sans+Arabic:wght@100;200;300&family=Inter:wght@300&family=Kolker+Brush&family=Nanum+Gothic&family=Overpass&family=Poor+Story&family=Roboto+Condensed&family=Secular+One&family=Work+Sans&display=swap" rel="stylesheet">
 
 </head>
+<script>
+    var csrfToken = "{{ csrf_token|escapejs }}";
+</script>
+
 <style>
     body {
         {% comment %} font-family: 'Chakra Petch', sans-serif; {% endcomment %}
@@ -266,12 +270,12 @@
             if (userInput.trim() !== "") {
                 appendMessage("You: " + userInput, true);
                 document.getElementById("userInput").value = "";
-
+        
                 fetch(window.location.href, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': getCookie('csrftoken')
+                        'X-CSRFToken': csrfToken  // Include the CSRF token here
                     },
                     body: 'user_input=' + encodeURIComponent(userInput)
                 })
@@ -282,6 +286,7 @@
                 .catch(error => console.error('Error:', error));
             }
         }
+        
 
         // Function to get the CSRF token
         function getCookie(name) {
