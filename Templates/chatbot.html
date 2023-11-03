@@ -205,14 +205,18 @@
             </div>
            
         <br><br>
+        <form method="post" id="chat-form">
+            {% csrf_token %}
             <div class="chatbox" style="background-color:#181818; color:white;">
                 <h1>রঞ্জন</h1>
                 <div id="chatlog"></div>
                 <div class="input-container">
                     <input type="text" style="background-color:#494949; color:white;" id="userInput" placeholder="Type your message here...">
-                    <button onclick="sendMessage()">Send</button>
+                    <button type="button" onclick="sendMessage()">Send</button>
                 </div>
             </div>
+        </form>
+        
         </div>
         <div class="image-section" style="color:white; margin-left:50px; margin-top:20px;">
             <div class="image-container">
